@@ -84,7 +84,7 @@ namespace ATBirthdayManager
             {
                 string name = ReadString("Digite o nome da pessoa que deseja pesquisar: ");
 
-                Person chosenPerson = showPeopleFound(name);
+                Person chosenPerson = ShowPeopleFound(name);
 
                 PeopleService.DeleteOne(chosenPerson.Id);
 
@@ -102,7 +102,7 @@ namespace ATBirthdayManager
             {
                 string name = ReadString("Digite o nome da pessoa que deseja pesquisar: ");
 
-                Person chosenPerson = showPeopleFound(name);
+                Person chosenPerson = ShowPeopleFound(name);
 
                 string firstName = ReadString("Digite o nome: "); ;
                 string lastName = ReadString("Digite o sobrenome: ");
@@ -130,29 +130,10 @@ namespace ATBirthdayManager
         {
             try
             {
-                var checkIfEmpty = PeopleService.GetAll();
-                if (checkIfEmpty.Status == false) throw new Exception(checkIfEmpty.Message);
-                
                 string name = ReadString("Digite o nome da pessoa que deseja pesquisar: ");
 
-                PeopleFound peopleFound = PeopleService.GetPersonByName(name);
-                if (peopleFound.Status == false) throw new Exception(peopleFound.Message);
+                Person chosenPerson = ShowPeopleFound(name);
 
-                int contador = 1;
-                foreach (var person in peopleFound.People)
-                {
-                    Console.WriteLine($"{contador} - {person.FullName}");
-                    contador++;
-                }
-
-                int option = int.Parse(ReadString("Escolha qual pessoa você deseja saber o aniversário: "));
-                if (option < 1 | option > peopleFound.People.Count)
-                {
-                    Console.WriteLine("Opção Inválida");
-                    MainMenu();
-                }
-
-                var chosenPerson = peopleFound.People[option - 1];
                 var chosenPersonsBirthday = chosenPerson.DaysForBirthday();
 
                 if (chosenPersonsBirthday == 0)
@@ -171,7 +152,7 @@ namespace ATBirthdayManager
             }
         }
 
-        public static Person showPeopleFound(string name)
+        public static Person ShowPeopleFound(string name)
         {
             PeopleFound peopleFound = PeopleService.GetPersonByName(name);
             if (peopleFound.Status == false) throw new Exception(peopleFound.Message);
